@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+    <h1>Events</h1>
+    <ul>
+    </ul>
+
+
+
+    <script type="text/javascript">
+      var evtSource = new EventSource('/events');
+      evtSource.addEventListener('add', addHandler, false);
+      evtSource.addEventListener('alert', alertHandler, false);
+      var eventList = document.querySelector('ul');
+
+      evtSource.onmessage = function(event) {
+        console.log("event")
+          var newElement =
+          document.createElement("li");
+
+        newElement.textContent = "message: " +
+          event.data;
+        eventList.appendChild(newElement);
+      }
+
+      evtSource.onopen = function(e) {
+        console.log("open")
+      }
+      evtSource.onerror = function(e) {
+        console.log("error:", e)
+      }
+
+      function addHandler(event) {
+        console.log("add")
+        var newElement = document.createElement("li");
+        newElement.textContent = "add: " + event.data;
+        eventList.appendChild(newElement);
+      }
+
+      function alertHandler(event) {
+        console.log("alert")
+        alert(event.data)
+      }
+    </script>
+  </body>
+</html>
+
+
